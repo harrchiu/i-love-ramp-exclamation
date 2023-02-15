@@ -189,6 +189,21 @@ _You need to fix some of the previous bugs in order to reproduce_
 
 **Actual:** In steps 6 and 8, toggled transaction lost the value given in step 2. _(E.g. Social Media Ads Inc is checked again)_
 
+## Note to reviewer:
+
+     After updating a transaction, the provided fix was to clear the paginatedTransactions/all-employees cache
+     as well as the employee-specific transaction cache.
+      1. It is acknowledged that the user must still refetch the current transaction group upon revisit
+         but this solution does preserve the cache of untouched transaction groups/views
+         (i.e. employees that aren't relevant will still be cached).
+      2. An alternative solution is to keep the cache up-to-date with the BE manually, done for ex. by:
+         1) converting caches for all-emps. & employee-specific to objects
+         2) applying transaction updates (can be generalized to change any field) to objects
+         3) updating both caches by re-mapping to stringified object
+      3. In the interest of time and using provided functions, and since both ideas have their tradeoffs
+         (refetching unnecessarily vs. manually syncing cache), the current solution is given as is.
+      4. Thank you for reading!
+
 ## Submission
 
 **IMPORTANT:** Before sharing your CodeSandbox, open the `email.txt` file and replace your email on the only line of the file. Don't use any prefix or suffix, just your email.
@@ -202,4 +217,5 @@ You will submit a link to a CodeSandbox with your responses. Make sure your Code
 - Don't remove existing `data-testid` tags. Otherwise, your results will be invalidated.
 - Other than the bugs, don't modify anything that will have a different outcome. Otherwise, your results might be invalidated.
 - Plagiarism is a serious offense and will result in disqualification from further consideration.
+
 # i-love-ramp-exclaimation
