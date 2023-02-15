@@ -124,3 +124,6 @@ export type RegisteredEndpoints =
   | "paginatedTransactions"
   | "transactionsByEmployee"
   | "setTransactionApproval"
+
+// stricter typing for registered endpoints with params, converted to cache key
+export type EndpointCacheKey = RegisteredEndpoints | `${RegisteredEndpoints}${string}`

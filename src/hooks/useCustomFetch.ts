@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "react"
 import { AppContext } from "../utils/context"
-import { fakeFetch, RegisteredEndpoints } from "../utils/fetch"
+import { EndpointCacheKey, fakeFetch, RegisteredEndpoints } from "../utils/fetch"
 import { useWrappedRequest } from "./useWrappedRequest"
 
 export function useCustomFetch() {
@@ -48,8 +48,12 @@ export function useCustomFetch() {
     cache.current = new Map<string, string>()
   }, [cache])
 
+  /*
+   **  Will clear cache of regeistered endpoint.
+   **  Updated type to accept params after endpoint name.
+   */
   const clearCacheByEndpoint = useCallback(
-    (endpointsToClear: RegisteredEndpoints[]) => {
+    (endpointsToClear: EndpointCacheKey[]) => {
       if (cache?.current === undefined) {
         return
       }
@@ -67,9 +71,13 @@ export function useCustomFetch() {
     [cache]
   )
 
-  return { fetchWithCache, fetchWithoutCache, clearCache, clearCacheByEndpoint, loading }
-}
+  /*
+   **  Used to properly update transactions in bug 7.
+   **  Will encode the endpoint name with additional params
+   **  as the key string that would be cached.
+   */
+  const getCacheKey = (endpoint: RegisteredEndpoints, params?: object): EndpointCacheKey =>
+    `${endpoint}${params ? `@${JSON.stringify(params)}` : ""}`
 
-function getCacheKey(endpoint: RegisteredEndpoints, params?: object) {
-  return `${endpoint}${params ? `@${JSON.stringify(params)}` : ""}`
+  return { fetchWithCache, fetchWithoutCache, clearCache, clearCacheByEndpoint, getCacheKey, loading }
 }
