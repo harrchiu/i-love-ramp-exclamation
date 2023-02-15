@@ -19,7 +19,7 @@ export const Transactions: TransactionsComponent = ({ transactions }) => {
        ** After updating a transaction, we must clear the paginatedTransactions/all-employees cache
        ** as well as the employee-specific transaction cache.
        **  1. It is acknowledged that the user must still refetch the current transaction group upon revisit
-       **     but this solution does preserve the cache of untouched transaction groups
+       **     but this solution does preserve the cache of untouched transaction groups/views
        **     (i.e. employees that aren't relevant will still be cached).
        **  2. An alternative solution is to keep the cache up-to-date with the BE manually, done for ex. by:
        **     1) converting caches for all-emps. & employee-specific to objects
